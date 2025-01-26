@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Title</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Bootstrap CSS v5.2.1 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+  <!-- Icone -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    body {
+      background-image: url(https://wallpapers.com/images/hd/hd-wallpaper-travel-j1qko25gehb442dh.webp);
+    }
+
+    .parallax {
+      /* Set a specific height */
+      min-height: 500px;
+
+      /* Create the parallax scrolling effect */
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .btn-color {
+      background-color: #1d4e8d;
+    }
+
+    .bg-header {
+      background-color: #11111178;
+
+    }
+
+    .bg-color {
+      background-color: #2473a1c8;
+    }
+  </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100 parallax">
+  <header>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-header py-3">
+      <a class="navbar-brand ps-5" href="#">TRIPZ</a>
+      <div class="container">
+        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+          data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse d-flex align-items-center" id="collapsibleNavId">
+          <ul class="navbar-nav me-auto mt-2 mt-lg-0 fs-4">
+            <li class="nav-item border rounded me-3 px-3">
+              <a class="nav-link active" href="#" aria-current="page">Home
+                <span class="visually-hidden">(current)</span></a>
+            </li>
+            <li class="nav-item me-3 d-none border rounded px-3" id="navUtenti">
+              <a class="nav-link" href="utenti.html">Utenti</a>
+            </li>
+
+          </ul>
+
+        </div>
+      </div>
+      <div class="nav-item ms-auto">
+
+        <button id="btnCarrello" class="btn btn-color fs-4 text-white me-3 border">Carrello <i
+            class='bi bi-cart'></i></button>
+        <button id="btnLogout" class="btn btn-danger fs-4 me-5 border">Logout</button>
+      </div>
+    </nav>
+
+  </header>
+  <main>
+    <div class="container">
+      <h1 class="text-center mt-4 text-white bg-header rounded p-3">Viaggi disponibili</h1>
+
+      <div id="listaViaggi" class="my-5 d-flex flex-wrap justify-content-center"></div>
+
+
+    </div>
+
+
+  </main>
+  <footer class="mt-auto bg-header text-white text-center py-3 d-flex align-items-center justify-content-center">
+    <small class="fs-5">&copy;Stefania B22-104-2024 TSS</small>
+  </footer>
+  <!-- Bootstrap JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+    crossorigin="anonymous"></script>
+
+  <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+      let navUtenti = document.querySelector("#navUtenti");
+
+      const URLViaggi = "http://localhost:9005/api/viaggi";
+
+      let listaViaggi = document.querySelector('#listaViaggi');
+      let viaggiCarrello = localStorage.getItem("viaggiCarrello") ? JSON.parse(localStorage.getItem("viaggiCarrello")) : [];
+
+      fetch(URLViaggi).then(data => { return data.json() }).then(viaggi => {
+        let userConnessoJSON = localStorage.getItem("userConnesso");
+        let userConnesso = JSON.parse(userConnessoJSON);
+
+        ///////// MOSTRA VIAGGI
+        viaggi.forEach((viaggio, index) => {
+          let card = document.createElement("div");
+          card.setAttribute("class", "shadow p-3 bg-color text-white card m-3 border border-light rounded-3");
+          card.style.width = "20rem";
+          listaViaggi.append(card);
+
+          let cardImg = document.createElement("img");
+          cardImg.setAttribute("class", "card-img-top");
+          cardImg.setAttribute("src", "https://www.viaggigiovani.it/images//lp/viaggi_avventure_nel_mondo.jpg");
+
+          let cardBody = document.createElement("div");
+          cardBody.setAttribute("class", "card-body");
+
+          let button = document.createElement("button");
+          button.setAttribute("class", "btn btn-color border text-white py-2 fs-5");
+          button.textContent = "Aggiungi al carrello";
+
+          card.append(cardImg, cardBody, button);
+
+          // SE ADMIN
+          if (userConnesso[0].role == "admin") {
+
+            navUtenti.classList.remove("d-none");
+
+            // Creo button per eliminare il viaggio
+            let buttonDelete = document.createElement("button");
+            buttonDelete.setAttribute("class", "btn btn-danger border border-light py-2 fs-5 mt-2");
+            buttonDelete.textContent = "Elimina destinazione";
+
+            card.append(buttonDelete);
+
+            class Viaggio {
+              constructor(id_viaggio, destinazione, prezzo) {
+                this.id_viaggio = id_viaggio,
+                  this.destinazione = destinazione,
+                  this.prezzo = prezzo
+              }
+            }
+
+
+            buttonDelete.addEventListener("click", function () {
+              let viaggioDaDeletare = new Viaggio(viaggio.id_viaggio, viaggio.destinazione, viaggio.prezzo);
+
+              fetch(URLViaggi, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(viaggioDaDeletare)
+              })
+              setTimeout(() => {
+                location.reload();
+
+              }, 1500);
+            })
+          } else {
+            navUtenti.classList.add("d-none");
+          }
+
+          let cardTitleDestinazione = document.createElement("h4");
+          cardTitleDestinazione.setAttribute("class", "card-title mb-3");
+          cardTitleDestinazione.textContent = "Destinazione: " + viaggio.destinazione;
+
+          let cardText = document.createElement("p");
+          cardText.setAttribute("class", "card-text");
+          cardText.textContent = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, sed nisi quasi quidem aperiam sunt.";
+
+          let cardTextPrezzo = document.createElement("p");
+          cardTextPrezzo.setAttribute("class", "card-text");
+          cardTextPrezzo.textContent = "Prezzo: " + viaggio.prezzo + ",00€";
+
+          cardBody.append(cardTitleDestinazione, cardText, cardTextPrezzo);
+
+
+          // AGGIUNGERE VIAGGI AL CARRELLO
+          button.addEventListener('click', function () {
+
+            viaggiCarrello.push(viaggio);
+            let viaggiCarrelloJSON = JSON.stringify(viaggiCarrello);
+            localStorage.setItem("viaggiCarrello", viaggiCarrelloJSON)
+
+            // Prenota diventa non cliccabile
+            button.classList.add("disabled");
+            button.textContent = "Aggiunto al carrello!";
+
+            // // Appare bottone elimina da carrello
+            // let buttonDelete = document.createElement("button");
+            // buttonDelete.setAttribute("class", "btn btn-danger mt-3");
+            // buttonDelete.textContent = "Elimina dal carrello";
+            // card.append(buttonDelete);
+
+            // buttonDelete.addEventListener("click", function () {
+            //   let index = viaggi.indexOf(viaggio);
+            //   viaggiCarrello.splice(index, 1);
+            //   localStorage.setItem("viaggiCarrello", JSON.stringify(viaggiCarrello))
+            // })
+
+          })
+
+        });
+
+      })
+
+
+      // VAI AL CARRELLO
+      let btnCarrello = document.querySelector("#btnCarrello");
+      btnCarrello.addEventListener("click", function () {
+        window.location = "carrello.html";
+      })
+
+      // LOGOUT
+      let btnLogout = document.querySelector("#btnLogout");
+      btnLogout.addEventListener("click", function () {
+
+        localStorage.clear();
+        window.location = "index.html";
+      })
+
+    })
+  </script>
+</body>
+
+</html>

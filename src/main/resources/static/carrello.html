@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Title</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Bootstrap CSS v5.2.1 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+
+  <!-- Icone -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <style>
+    body {
+      background-image: url(https://wallpapers.com/images/hd/hd-wallpaper-travel-j1qko25gehb442dh.webp);
+      background-size: cover;
+    }
+
+    .btn-conferma {
+      background-color: #1d4e8d;
+    }
+
+    .bg-color {
+      background-color: #3384b3d4;
+    }
+
+    .bg-header {
+      background-color: #11111178;
+
+    }
+  </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+  <header>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-header py-3">
+      <a class="navbar-brand ps-5" href="#">TRIPZ</a>
+      <div class="container">
+        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+          data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse d-flex align-items-center" id="collapsibleNavId">
+          <ul class="navbar-nav me-auto mt-2 mt-lg-0 fs-4">
+            <li class="nav-item me-3 border rounded px-3">
+              <a class="nav-link" href="home.html" aria-current="page">Home</a>
+            </li>
+            <li class="nav-item me-3 d-none border rounded px-3" id="navUtenti">
+              <a class="nav-link" href="utenti.html">Utenti</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="nav-item ms-auto">
+
+        <button id="btnCarrello" class="btn btn-color active fs-4 border text-white me-3">Carrello <i
+            class='bi bi-cart'></i></button>
+        <button id="btnLogout" class="btn btn-danger fs-4 me-5 border">Logout</button>
+      </div>
+    </nav>
+
+  </header>
+
+  <main>
+
+    <div class="container">
+
+      <div class="row align-items-start justify-content-between border bg-color p-4 rounded mt-5">
+        <div class="col-5 ">
+          <h2 class="text-white">Viaggi selezionati</h2>
+          <hr class="text-white mb-4">
+          <h4 id="noViaggi" class="text-white"></h4>
+          <ul class="list-group list-group-flush rounded d-flex" id="viaggiSelezionati">
+
+          </ul>
+        </div>
+        <div class="col-5 text-end mx-3 text-white" id="riepilogo">
+          <h2>Riepilogo</h2>
+          <hr>
+
+          <label for="richiesteSpeciali" class="form-label fs-5 mt-3">Richieste speciali</label>
+          <textarea name="richiesteSpeciali" id="richiesteSpeciali" class="form-control" rows="3"></textarea>
+
+
+          <label for="metodoPagamento" class="form-label fs-5 mt-4">Seleziona metodo di pagamento</label>
+          <select name="metodoPagamento" id="metodoPagamento" class="form-select form-select-lg mb-4">
+            <option value="">Seleziona</option>
+            <option value="Paypal">Paypal</option>
+            <option value="Carta di credito">Carta di credito</option>
+            <option value="Google Pay">Google Pay</option>
+          </select>
+
+
+        </div>
+      </div>
+
+
+    </div>
+
+  </main>
+
+  <footer class="mt-auto bg-header text-white text-center py-3 d-flex align-items-center justify-content-center">
+    <small class="fs-5">&copy;Stefania B22-104-2024 TSS</small>
+  </footer>
+
+  <!-- Bootstrap JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+    crossorigin="anonymous"></script>
+
+  <script>
+    let userConnessoJSON = localStorage.getItem("userConnesso");
+    let userConnesso = JSON.parse(userConnessoJSON);
+
+    let viaggiCarrello = JSON.parse(localStorage.getItem("viaggiCarrello"));
+
+    // CHECK USER
+    if (userConnesso[0].role == "admin") {
+      navUtenti.classList.remove("d-none");
+    } else {
+      navUtenti.classList.add("d-none");
+    }
+
+    let viaggiSelezionati = document.querySelector("#viaggiSelezionati");
+    let riepilogo = document.querySelector("#riepilogo");
+
+    let prezzoTotale = 0;
+
+    if (viaggiCarrello && viaggiCarrello.length > 0) {
+      viaggiCarrello.forEach((viaggio, index) => {
+        let li = document.createElement("li");
+        li.setAttribute("class", "list-group-item rounded d-flex align-items-center justify-content-between mb-2");
+        li.textContent = `Destinazione: ${viaggio.destinazione}. Prezzo: ${viaggio.prezzo},00€`;
+
+        let buttonDelete = document.createElement("button");
+        buttonDelete.setAttribute("class", "btn btn-danger");
+        buttonDelete.textContent = "Elimina";
+
+        li.append(buttonDelete)
+        viaggiSelezionati.append(li);
+
+        // Eliminare viaggio dal carrello
+        buttonDelete.addEventListener("click", function () {
+          viaggiCarrello.splice(index, 1);
+          localStorage.setItem("viaggiCarrello", JSON.stringify(viaggiCarrello))
+          location.reload();
+        })
+
+        // Calcolo somma
+        prezzoTotale += viaggio.prezzo;
+
+      });
+
+      // RIEPILOGO
+      let h3 = document.createElement("h3");
+      h3.textContent = "Totale prenotazione";
+
+      let h4prezzo = document.createElement("h4");
+      h4prezzo.textContent = prezzoTotale + ",00€";
+
+      let buttonConferma = document.createElement("button");
+      buttonConferma.setAttribute("class", "btn btn-conferma border border-light border-2 my-5 text-white fs-3 py-2 px-3");
+      buttonConferma.textContent = "Conferma";
+
+      riepilogo.append(h3, h4prezzo, buttonConferma);
+
+      class Prenotazione {
+        constructor(dataPrenotazione, viaggio, utente) {
+          this.dataPrenotazione = dataPrenotazione,
+            this.viaggio = viaggio,
+            this.utente = utente
+        }
+      }
+
+      // class Viaggio {
+      //   constructor(destinazione, prezzo) {
+      //     this.destinazione = destinazione,
+      //       this.prezzo = prezzo
+      //   }
+      // }
+
+      // let viaggiModel = [];
+      // viaggiCarrello.forEach(viaggio => {
+      //   let viaggioModel = new Viaggio(viaggio.destinazione, viaggio.prezzo)
+      //   viaggiModel.push(viaggioModel);
+      // })
+
+      // fetch("http://localhost:9004/api/viaggi").then(data => { return data.json() }).then(viaggi => {
+      //   let viaggiPost = [];
+      //   viaggiCarrello.forEach(viaggioStorage => {
+      //     let viaggiPostFilter = viaggi.filter(viaggioFetch => viaggioFetch.destinazione == viaggioStorage.destinazione);
+      //     viaggiPost.push(...viaggiPostFilter);
+
+      //   })
+
+      // console.log(viaggiPost);
+
+
+
+      let prenotazione = new Prenotazione(new Date(), viaggiCarrello, userConnesso[0]);
+      console.log(prenotazione);
+      console.log(viaggiCarrello);
+
+      buttonConferma.addEventListener("click", function () {
+        console.log("Conferma button clicked");
+        fetch("http://localhost:9005/api/prenotazioni", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(prenotazione)
+        }).then(response => {
+          if (!response.ok) {
+            throw new Error("Qualcosa è andato storto");
+          }
+          return response.json();
+        }).then(data => {
+          console.log("Prenotazione confermata:", data);
+          let messaggioConferma = document.createElement("h4");
+          let countdown = 7;
+
+          setInterval(() => {
+            messaggioConferma.textContent = "Il viaggio è stato confermato con successo. Stai per essere reindirizzato tra " + countdown + " secondi."
+            messaggioConferma.setAttribute("class", "text-white mt-5 p-4 bg-header rounded");
+            countdown--;
+            if (countdown <= 0) {
+
+              document.body.removeChild(confermaMessaggio);
+              clearInterval(countdownInterval);
+            }
+          }, 1000);
+
+          viaggiSelezionati.append(messaggioConferma);
+
+          setTimeout(() => {
+            localStorage.removeItem("viaggiCarrello");
+            window.location = "home.html";
+          }, 7000);
+
+
+        });
+
+      })
+      // })
+
+    } else {
+      document.querySelector("#noViaggi").textContent = "Non hai selezionato nessun viaggio.";
+    }
+
+    // LOGOUT
+    let btnLogout = document.querySelector("#btnLogout");
+    btnLogout.addEventListener("click", function () {
+
+      localStorage.clear();
+      window.location = "index.html";
+    })
+
+
+  </script>
+
+
+</body>
+
+</html>

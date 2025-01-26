@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Title</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Bootstrap CSS v5.2.1 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+
+  <!-- Icone -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <style>
+    body {
+      background-image: url(https://wallpapers.com/images/hd/hd-wallpaper-travel-j1qko25gehb442dh.webp);
+      background-size: cover;
+    }
+
+    .btn-color {
+      background-color: #3384b3;
+    }
+
+    .bg-header {
+      background-color: #11111178;
+
+    }
+  </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+  <header>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-header py-3">
+      <a class="navbar-brand ps-5" href="#">TRIPZ</a>
+      <div class="container">
+        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+          data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse d-flex align-items-center" id="collapsibleNavId">
+          <ul class="navbar-nav me-auto mt-2 mt-lg-0 fs-4">
+            <li class="nav-item border rounded px-3 me-3">
+              <a class="nav-link" href="home.html" aria-current="page">Home
+              </a>
+            </li>
+            <li class="nav-item border rounded px-3 active me-3" id="navUtenti">
+              <a class="nav-link" href="#">Utenti <span class="visually-hidden">(current)</span></a>
+            </li>
+
+          </ul>
+
+        </div>
+      </div>
+      <div class="nav-item ms-auto">
+
+        <button id="btnCarrello" class="btn btn-color fs-4 text-white me-3 border">Carrello <i
+            class='bi bi-cart'></i></button>
+        <button id="btnLogout" class="btn btn-danger fs-4 me-5 border">Logout</button>
+      </div>
+    </nav>
+
+  </header>
+  <main>
+
+    <div class="container">
+      <div class="card mt-4">
+        <div class="card-body">
+          <h4 class="card-title text-center">Utenti iscritti</h4>
+          <HR>
+          </HR>
+        </div>
+
+        <table id="tabella" class="table table-striped px-2">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Email</th>
+              <th>Password</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+
+          </tbody>
+        </table>
+
+        <!-- <ul class="list-group list-group-flush d-flex justify-content-center" id="utentiLista">
+
+        </ul> -->
+      </div>
+    </div>
+
+
+
+  </main>
+  <footer class="mt-auto bg-header text-white text-center py-3 d-flex align-items-center justify-content-center">
+    <small class="fs-5">&copy;Stefania B22-104-2024 TSS</small>
+  </footer>
+  <!-- Bootstrap JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+    crossorigin="anonymous"></script>
+
+  <script>
+
+    let utentiLista = document.querySelector("#utentiLista");
+
+    const urlUtenti = "http://localhost:9005/api/utenti";
+
+    let tbody = document.querySelector("tbody");
+
+    fetch(urlUtenti).then(data => { return data.json() }).then(utenti => {
+
+      utenti.forEach(utente => {
+
+        let tr = document.createElement("tr");
+        let td1 = document.createElement("td");
+        td1.textContent = utente.nome;
+        let td2 = document.createElement("td");
+        td2.textContent = utente.email;
+        let td3 = document.createElement("td");
+        td3.textContent = utente.password;
+        let td4 = document.createElement("td");
+        td4.textContent = utente.role;
+
+        tr.append(td1, td2, td3, td4)
+        tbody.append(tr);
+
+        // let li = document.createElement("li");
+        // li.setAttribute("class", "list-group-item rounded d-flex align-items-center justify-content-between py-3");
+        // // li.textContent = `${utente.nome} ${utente.email} ${utente.password} ${utente.role}`;
+        // let br = document.createElement("br");
+
+        // let pNome = document.createElement("p");
+        // pNome.textContent = `${utente.nome}`;
+        // let pMail = document.createElement("p");
+        // pMail.textContent = `${utente.email}`;
+        // let pPass = document.createElement("p");
+        // pPass.textContent = `${utente.password}`;
+        // let pRole = document.createElement("p");
+        // pRole.textContent = `${utente.role}`;
+
+        // li.append(pNome, br, pMail, br, pPass, br, pRole)
+
+        // let buttonDelete = document.createElement("button");
+        // buttonDelete.setAttribute("class", "btn btn-danger");
+        // buttonDelete.textContent = "Elimina";
+
+        // li.append(buttonDelete)
+        // utentiLista.append(li);
+
+      });
+    })
+
+    // VAI AL CARRELLO
+    let btnCarrello = document.querySelector("#btnCarrello");
+    btnCarrello.addEventListener("click", function () {
+      window.location = "carrello.html";
+    })
+
+    // LOGOUT
+    let btnLogout = document.querySelector("#btnLogout");
+    btnLogout.addEventListener("click", function () {
+
+      localStorage.clear();
+      window.location = "index.html";
+    })
+  </script>
+</body>
+
+</html>
