@@ -33,6 +33,14 @@
     .bg-header {
       background-color: #11111178;
     }
+
+    .regLink:link, .regLink:active{
+    color: #dcf3fe !important;
+    }
+    .regLink:hover{
+    color: #efefef;
+    }
+
   </style>
 </head>
 
@@ -51,7 +59,7 @@
       <div class="text-white fs-4">
         <!-- <form id="formEl" class="text-white fs-4"> -->
         <h2>Inserisci le tue credenziali</h2>
-        <div class="mb-3 mt-3">
+        <div class="my-3">
           <label for="emailInput" class="form-label">Email</label>
           <input type="email" class="form-control" name="email" id="emailInput" aria-describedby="emailHelpId"
             placeholder="admin@example.com" />
@@ -71,7 +79,7 @@
         </div>
 
         <button class="w-100 btn btn-lg btn-color mt-4 text-white border " type="button" id="loginBtn">Accedi</button>
-        <h4 class="mt-4">Nuovo utente? <a href="registrazione.html">Registrati</a></h4>
+        <h4 class="mt-4">Nuovo utente? <a href="registrazione.html" class="regLink">Registrati</a></h4>
 
         <!-- </form> -->
       </div>
