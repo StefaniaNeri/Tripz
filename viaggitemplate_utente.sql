@@ -38,7 +38,7 @@ CREATE TABLE `utente` (
 
 LOCK TABLES `utente` WRITE;
 /*!40000 ALTER TABLE `utente` DISABLE KEYS */;
-INSERT INTO `utente` VALUES (1,'dario.ferretti@example.com','Dario Ferretti','password','base'),(2,'elisa.montanari@example.com','Elisa Montanari','password','base'),(3,'leonardo.conti@example.com','Leonardo Conti','password','base'),(4,'martina.rinaldi@example.com','Martina Rinaldi','password','base'),(5,'admin@example.com','Admin','password','admin'),(6,'pippo@com','Blippo','pass','base'),(7,'ff@fff','fiffo','pass','base'),(8,'pippo@com','Fuffi','pass','base'),(9,'ff@fff','sdfsdfsdfdsfsdfsd','paaasss','admin'),(10,'pippo@com','sdfsdfsdfdsfsdfsd','kutrf','admin'),(11,'friffi@mail.com','friffo friffi','pass','admin');
+INSERT INTO `utente` VALUES (1,'dario.ferretti@example.com','Dario Ferretti','password','base'),(2,'elisa.montanari@example.com','Elisa Montanari','password','base'),(3,'leonardo.conti@example.com','Leonardo Conti','password','base'),(4,'martina.rinaldi@example.com','Martina Rinaldi','password','base'),(5,'admin@example.com','Admin','password','admin'),(6,'pippo@com','Blippo','pass','base'),(7,'nandojob@info.com','Nando','pass','base'),(8,'pippo@com','Fuffi','pass','base'),(9,'pluto@info.com','Pluto','paaasss','admin');
 /*!40000 ALTER TABLE `utente` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-26 17:49:09
+-- Dump completed on 2025-04-05 17:11:18
